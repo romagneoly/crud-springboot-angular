@@ -1,0 +1,108 @@
+<p-panel>
+    <ng-template pTemplate="header">
+        Supervisor function
+    </ng-template>
+    <p-toast></p-toast>
+
+    <div class="card">
+        <p-table #dt [value]="users" [rows]="10" [paginator]="true"
+                 [globalFilterFields]="['userName','firstName','lastName']" responsiveLayout="scroll"
+                 [rowHover]="true" dataKey="id"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [showCurrentPageReport]="true">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    <h5 class="p-m-0">List Users</h5>
+                    <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text"
+                           (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                           placeholder="Search..."/>
+                </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="userName">Username
+                        <p-sortIcon field="userName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="firstName">First Name
+                        <p-sortIcon field="firstName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="lastName">Last Name
+                        <p-sortIcon field="lastName"></p-sortIcon>
+                    </th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-user>
+                <tr>
+                    <td>{{user.userName}}</td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editUser(user)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    In total there are {{users ? users.length : 0 }} users.
+                </div>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Go to Home" icon="pi pi-check" styleClass="p-button-secondary"
+                  [style]="{'margin-left': '.5em'}" (onClick)="goToHome()"></p-button>
+    </ng-template>
+</p-panel>
+
+<p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="User Details" [modal]="true"
+          styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="userName">Username</label>
+            <input class="p-inputtext-sm" type="text" pInputText id="userName" [(ngModel)]="user.userName" required
+                   autofocus/>
+            <small class="p-error" *ngIf="submitted && !user.userName">Username is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="firstName"> First Name</label>
+            <input class="p-inputtext-sm" type="text" pInputText id="firstName" [(ngModel)]="user.firstName" required
+                   autofocus/>
+            <small class="p-error" *ngIf="submitted && !user.firstName">First Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="lastName"> Last Name</label>
+            <input type="text" pInputText id="lastName" [(ngModel)]="user.lastName" required autofocus/>
+            <small class="p-error" *ngIf="submitted && !user.lastName">Last Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="birthDate"> Birth Date</label>
+            <p-calendar appendTo="body" id="birthDate" [(ngModel)]="user.birthDate"
+                        [readonlyInput]="true" [style]="{'width':'60%'}" [inputStyle]="{'width':'60%'}" [showIcon]="true"></p-calendar>
+            <small class="p-error" *ngIf="submitted && !user.birthDate">Birth Date is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="joinDate"> Join Date</label>
+            <p-calendar appendTo="body" id="joinDate" [(ngModel)]="user.joinDate"
+                        [readonlyInput]="true" [style]="{'width':'60%'}" [inputStyle]="{'width':'60%'}" [showIcon]="true"></p-calendar>
+            <small class="p-error" *ngIf="submitted && !user.joinDate">Join Date is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="balance">Balance</label>
+            <p-inputNumber id="balance" [(ngModel)]="user.balance" mode="decimal" [ariaRequired]="true"></p-inputNumber>
+            <small class="p-error" *ngIf="submitted && !user.balance">Balance is required.</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
