@@ -1,0 +1,11 @@
+<p-card header="Home" subheader="App description" [style]="{width: '360px'}" styleClass="p-card-shadow">
+  <ng-template pTemplate="header">
+    <img alt="Card" src="assets/showcase/images/usercard.png">
+  </ng-template>
+  <p>This app is one page app that list users from database and can add/edit or delete then on the screen. In order to acces the page you have to login. There are to users. "Admin" can do all operation. "Supervisor", can do view and edit only</p>
+  <p>User entity is username, date birth, date of joining, balance. Teh view table can sort and filter the results.</p>
+  <ng-template pTemplate="footer">
+    <p-button label="Admin" icon="pi pi-check" (onClick)="goAdmin()"></p-button>
+    <p-button label="Supervisor" icon="pi pi-check" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}" (onClick)="goSupervisor()"></p-button>
+  </ng-template>
+</p-card>
